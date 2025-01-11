@@ -12,6 +12,8 @@ from homeassistant import config_entries
 import homeassistant.components as core
 from homeassistant.core import split_entity_id, HomeAssistant
 
+from homeassistant.helpers.discovery import load_platform
+
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 
@@ -104,10 +106,10 @@ async def async_setup(hass, config):
 
 	
 
-	hass.helpers.discovery.load_platform('media_player', DOMAIN, {}, config)
-	hass.helpers.discovery.load_platform('switch', DOMAIN, {}, config)
-	hass.helpers.discovery.load_platform('button', DOMAIN, {}, config)
-	hass.helpers.discovery.load_platform('number', DOMAIN, {}, config)
+	load_platform(hass, 'media_player', DOMAIN, {}, config)
+	load_platform(hass, 'switch', DOMAIN, {}, config)
+	load_platform(hass, 'button', DOMAIN, {}, config)
+	load_platform(hass, 'number', DOMAIN, {}, config)
 	
 	power_target = config[DOMAIN].get(CONF_TARGET)
 	hass.data[DOMAIN].power_target = power_target 
