@@ -11,6 +11,7 @@ from .speakercraft_media import SpeakerCraft, SpeakerCraftZ
 from homeassistant import config_entries
 import homeassistant.components as core
 from homeassistant.core import split_entity_id, HomeAssistant
+from homeassistant.components.switch import is_on
 
 from homeassistant.helpers.discovery import load_platform
 
@@ -143,7 +144,7 @@ class powerhandler():
 		power_target = self.power_target
 
 
-		if controller.firstzonerequested and not core.is_on(self._hass, power_target):
+		if controller.firstzonerequested and not is_on(self._hass, power_target):
 			_LOGGER.debug("Power Handler Turning on " + power_target)
 			domain = split_entity_id(power_target)[0]
 			data = {ATTR_ENTITY_ID: power_target}
@@ -156,7 +157,7 @@ class powerhandler():
 			_LOGGER.debug("Power Handler Turning Off " + power_target + " task cancelled")
 			self.turnofftask.cancel()
 			self.turnofftask = None			
-		elif controller.power=="Off" and core.is_on(self._hass, power_target) and self.turnofftask is None:
+		elif controller.power=="Off" and is_on(self._hass, power_target) and self.turnofftask is None:
 			_LOGGER.debug("Power Handler Turning Off " + power_target + " task create")
 			self.turnofftask = asyncio.create_task(self.turnoff())
 
